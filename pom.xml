@@ -10,7 +10,7 @@
   <version>0.1-SNAPSHOT</version>
   <modules>
     <module>hrpc-server</module>
-    <module>grpc-client</module>
+    <module>hrpc-client</module>
   </modules>
 
   <name>hrpc</name>
