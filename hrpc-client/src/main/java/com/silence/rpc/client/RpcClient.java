@@ -1,5 +1,6 @@
 package com.silence.rpc.client;
 
+import com.silence.service.ServiceWrap;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,20 +12,20 @@ import java.net.Socket;
 
 public class RpcClient {
 
-    public static <T> T getRpcProxy(String host, int port, Class<?> serviceClass){
-        InetSocketAddress address = new InetSocketAddress(host, port);
+    public static <T> T getRpcProxy(String serviceName,Class<?> serviceClass) throws Exception {
+        ServiceWrap serviceWrap = ServiceCenter.getService(serviceName);
         return (T) Proxy.newProxyInstance(serviceClass.getClassLoader(),
                 new Class[]{serviceClass},
-                new InvokeProcess(address, serviceClass.getName()));
+                new InvokeProcess(serviceWrap, serviceClass.getName()));
     }
 
     static class InvokeProcess implements InvocationHandler {
 
-        private InetSocketAddress address;
+        private ServiceWrap serviceWrap;
         private String serviceName;
 
-        public InvokeProcess(InetSocketAddress address, String serviceName) {
-            this.address = address;
+        public InvokeProcess(ServiceWrap serviceWrap, String serviceName) {
+            this.serviceWrap = serviceWrap;
             this.serviceName = serviceName;
         }
 
@@ -35,6 +36,7 @@ public class RpcClient {
             ObjectInputStream inputStream = null;
             try {
                 socket = new Socket();
+                InetSocketAddress address = new InetSocketAddress(serviceWrap.getHost(),serviceWrap.getPort());
                 socket.connect(address);
                 outputStream = new ObjectOutputStream(socket.getOutputStream());
                 inputStream = new ObjectInputStream(socket.getInputStream());

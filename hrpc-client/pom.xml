@@ -11,5 +11,11 @@
 
     <artifactId>hrpc-client</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.silence.hrpc</groupId>
+            <artifactId>hrpc-registry</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

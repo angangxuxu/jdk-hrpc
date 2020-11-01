@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="hrpc-client" />
         <module name="hrpc-server" />
+        <module name="hrpc-registry" />
       </profile>
     </annotationProcessing>
   </component>
